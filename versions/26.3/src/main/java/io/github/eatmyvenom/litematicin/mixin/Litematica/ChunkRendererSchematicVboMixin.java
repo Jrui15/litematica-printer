@@ -15,6 +15,7 @@ import fi.dy.masa.litematica.render.schematic.BlockModelRendererSchematic;
 import fi.dy.masa.litematica.render.schematic.ChunkMeshDataSchematic;
 import fi.dy.masa.litematica.render.schematic.ChunkCacheSchematic;
 import fi.dy.masa.litematica.render.schematic.ChunkRenderDataSchematic;
+import fi.dy.masa.litematica.render.schematic.ChunkRenderDispatcherBuffers;
 import fi.dy.masa.litematica.render.schematic.ChunkRendererSchematicVbo;
 import fi.dy.masa.litematica.render.schematic.FluidModelRendererSchematic;
 import fi.dy.masa.litematica.render.schematic.IBlockOutputSchematic;
@@ -28,8 +29,9 @@ public class ChunkRendererSchematicVboMixin {
 	@Shadow
 	protected ChunkCacheSchematic schematicWorldView;
 
-	@Inject(method = "renderBlocksAndOverlay", at = @At("HEAD"), cancellable = true, remap = false)
-	private void onRenderBlocksAndOverlay(BlockModelRendererSchematic blockRenderer, FluidModelRendererSchematic fluidRenderer, BlockPos pos, ChunkRenderDataSchematic data, ChunkMeshDataSchematic meshData, IBlockOutputSchematic blockOutput, Vec3 cameraPos, VisGraph visibilityGraph, CallbackInfo ci) {
+	// Litematica 0.29.1 inserts dispatcher buffers between mesh data and block output.
+	@Inject(method = "renderBlocksAndOverlay(Lfi/dy/masa/litematica/render/schematic/BlockModelRendererSchematic;Lfi/dy/masa/litematica/render/schematic/FluidModelRendererSchematic;Lnet/minecraft/core/BlockPos;Lfi/dy/masa/litematica/render/schematic/ChunkRenderDataSchematic;Lfi/dy/masa/litematica/render/schematic/ChunkMeshDataSchematic;Lfi/dy/masa/litematica/render/schematic/ChunkRenderDispatcherBuffers;Lfi/dy/masa/litematica/render/schematic/IBlockOutputSchematic;Lnet/minecraft/world/phys/Vec3;Lnet/minecraft/client/renderer/chunk/VisGraph;)V", at = @At("HEAD"), cancellable = true, remap = false)
+	private void onRenderBlocksAndOverlay(BlockModelRendererSchematic blockRenderer, FluidModelRendererSchematic fluidRenderer, BlockPos pos, ChunkRenderDataSchematic data, ChunkMeshDataSchematic meshData, ChunkRenderDispatcherBuffers buffers, IBlockOutputSchematic blockOutput, Vec3 cameraPos, VisGraph visibilityGraph, CallbackInfo ci) {
 		if (!RENDER_ONLY_HOLDING_ITEMS.getBooleanValue()) return;
 		BlockState stateSchematic = this.schematicWorldView.getBlockState(pos);
 		Item item = stateSchematic.getBlock().asItem();

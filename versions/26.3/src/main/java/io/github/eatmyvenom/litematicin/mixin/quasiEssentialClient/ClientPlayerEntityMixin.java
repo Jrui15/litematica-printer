@@ -67,7 +67,8 @@ public abstract class ClientPlayerEntityMixin extends Player {
 	}
 
 	//#if MC>=12102
-	@Redirect(method = "tick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;send(Lnet/minecraft/network/protocol/Packet;)V", ordinal = 1), require = 0)
+	// 26.3 sends the passenger rotation packet from sendChanges, after the input packet.
+	@Redirect(method = "sendChanges()V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/multiplayer/ClientPacketListener;send(Lnet/minecraft/network/protocol/Packet;)V", ordinal = 1), require = 0)
 	//#elseif MC>=11904
 	//$$ @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayNetworkHandler;sendPacket(Lnet/minecraft/network/packet/Packet;)V", ordinal = 1), require = 0)
 	//#else
