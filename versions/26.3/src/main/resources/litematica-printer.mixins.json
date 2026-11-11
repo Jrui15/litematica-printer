@@ -1,0 +1,27 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "io.github.eatmyvenom.litematicin.mixin",
+  "compatibilityLevel": "{{COMPATIBILITY_LEVEL}}",
+  "plugin": "io.github.eatmyvenom.litematicin.utils.MixinConfigPlugin",
+  "client": [
+    "EssentialClient.FakeLookMixin",
+    "Litematica.ConfigsMixin",
+    "Litematica.GuiConfigsMixin",
+    "Litematica.ChunkRendererSchematicVboMixin",
+    "Litematica.InputHandlerMixin",
+    "Litematica.MinecraftClientMixin",
+    "Litematica.SchematicVerifierMixin",
+    "Litematica.WorldUtilsMixin",
+    "MinecraftClient.AbstractContainerMenuAccessor",
+    "MinecraftClient.ClientCommonPacketListenerImplMixin",
+    "MinecraftClient.ClientPlayerInteractionManagerMixin",
+    "MinecraftClient.ClientPlayNetworkHandlerMixin",
+    "quasiEssentialClient.ClientPlayerEntityMixin",
+    "quasiEssentialClient.ItemPlacementContextMixin",
+    "quasiEssentialClient.ItemUsageContextMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
