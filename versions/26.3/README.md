@@ -34,3 +34,24 @@ Validated against the pinned Litematica 0.29.1 (ZqV316KY), MaLiLib 0.30.2
   `Unable to initialize SDL: No available video device` in the headless environment.
   This is not a successful title-screen or gameplay test. The gameplay checklist
   above remains necessary. The temporary audit mod is not included in the build.
+
+## Printer activation
+
+Enable Litematica's `easyPlaceMode`, disable `printerOff`, and hold the
+Easy Place activation key. For continuous placement enable `easyPlaceHoldEnabled`.
+Load and enable a schematic placement, stay within reach, and use a tool mode
+other than Rebuild. Both values of `easyPlacePostRewrite` are supported.
+
+Litematica routes legacy Easy Place through `WorldUtils.doEasyPlaceAction` and
+rewritten Easy Place through `EasyPlaceUtils.handleEasyPlace`. The printer
+intercepts both at HEAD using the same cancellable callback. This preserves
+the printer-off fallback, fake-rotation-only mode, and existing placement logic.
+Previously only the rewritten path was intercepted, leaving the printer inactive
+when the legacy path was selected.
+
+Validation: Java 25 `:26.3:build`; runtime transformation of both Easy Place
+classes; `python versions/26.3/tests/check_activation_mixins.py` against the
+exported runtime bytecode. The check verifies both paths invoke the printer
+callback and honor cancellation. These checks do not establish successful
+in-world placement; graphical startup is blocked here by SDL's missing video
+device.

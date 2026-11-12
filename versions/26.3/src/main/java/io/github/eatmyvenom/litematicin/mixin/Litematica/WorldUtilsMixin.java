@@ -1,6 +1,7 @@
 package io.github.eatmyvenom.litematicin.mixin.Litematica;
 
 import fi.dy.masa.litematica.util.EasyPlaceUtils;
+import fi.dy.masa.litematica.util.WorldUtils;
 import io.github.eatmyvenom.litematicin.LitematicaMixinMod;
 import io.github.eatmyvenom.litematicin.utils.MessageHolder;
 import io.github.eatmyvenom.litematicin.utils.Printer;
@@ -14,7 +15,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static io.github.eatmyvenom.litematicin.LitematicaMixinMod.*;
 
-@Mixin(value = EasyPlaceUtils.class, remap = false, priority = 1010)
+// Support both values of Litematica's easyPlacePostRewrite setting.
+@Mixin(value = {EasyPlaceUtils.class, WorldUtils.class}, remap = false, priority = 1010)
 public class WorldUtilsMixin {
 	private static boolean hasSent = false;
 
@@ -23,7 +25,8 @@ public class WorldUtilsMixin {
 	 */
 	//@Overwrite
 	@Inject(
-		method = "handleEasyPlace",
+		method = {"handleEasyPlace()Lnet/minecraft/world/InteractionResult;",
+            "doEasyPlaceAction(Lnet/minecraft/client/Minecraft;)Lnet/minecraft/world/InteractionResult;"},
 		at = @At("HEAD"),
 		cancellable = true
 	)
@@ -68,7 +71,8 @@ public class WorldUtilsMixin {
 	}
 
 	@Inject(
-		method = "handleEasyPlace",
+		method = {"handleEasyPlace()Lnet/minecraft/world/InteractionResult;",
+            "doEasyPlaceAction(Lnet/minecraft/client/Minecraft;)Lnet/minecraft/world/InteractionResult;"},
 		at = @At(
 			value = "INVOKE_ASSIGN",
 			target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;useItemOn(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;",
@@ -87,7 +91,8 @@ public class WorldUtilsMixin {
 	}
 
 	@Inject(
-		method = "handleEasyPlace",
+		method = {"handleEasyPlace()Lnet/minecraft/world/InteractionResult;",
+            "doEasyPlaceAction(Lnet/minecraft/client/Minecraft;)Lnet/minecraft/world/InteractionResult;"},
 		at = @At(
 			value = "INVOKE_ASSIGN",
 			target = "Lnet/minecraft/client/multiplayer/MultiPlayerGameMode;useItemOn(Lnet/minecraft/client/player/LocalPlayer;Lnet/minecraft/world/InteractionHand;Lnet/minecraft/world/phys/BlockHitResult;)Lnet/minecraft/world/InteractionResult;",
