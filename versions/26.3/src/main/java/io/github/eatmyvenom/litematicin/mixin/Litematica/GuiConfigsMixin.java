@@ -13,12 +13,13 @@ import java.util.List;
 
 @Mixin(value = GuiConfigs.class, remap = false)
 public class GuiConfigsMixin {
-    @Redirect(method = "getConfigs", at = @At(value = "FIELD", target = "Lfi/dy/masa/litematica/config/Configs$Generic;OPTIONS:Lcom/google/common/collect/ImmutableList;"))
+    // The All tab builds its own list instead of using the per-tab branches.
+    @Redirect(method = {"getConfigs", "getAllConfigs"}, at = @At(value = "FIELD", target = "Lfi/dy/masa/litematica/config/Configs$Generic;OPTIONS:Lcom/google/common/collect/ImmutableList;"))
     private ImmutableList<IConfigBase> moreOptions() {
         return LitematicaMixinMod.betterList;
     }
 
-    @Redirect(method="getConfigs", at=@At(value="FIELD", target="Lfi/dy/masa/litematica/config/Hotkeys;HOTKEY_LIST:Ljava/util/List;"))
+    @Redirect(method={"getConfigs", "getAllConfigs"}, at=@At(value="FIELD", target="Lfi/dy/masa/litematica/config/Hotkeys;HOTKEY_LIST:Ljava/util/List;"))
     private List<ConfigHotkey> moreHotkeyOptions() {
         return LitematicaMixinMod.getHotkeyList();
     }
