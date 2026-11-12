@@ -34,17 +34,3 @@ Validated against the pinned Litematica 0.29.1 (ZqV316KY), MaLiLib 0.30.2
   `Unable to initialize SDL: No available video device` in the headless environment.
   This is not a successful title-screen or gameplay test. The gameplay checklist
   above remains necessary. The temporary audit mod is not included in the build.
-
-## Config screen integration
-
-Printer settings appear in Generic and All; printer keybinds appear in Hotkeys
-and All. Both `getConfigs()` and `getAllConfigs()` must redirect the generic
-options and hotkey lists. Litematica's All tab constructs its own list, so
-hooking only `getConfigs()` leaves printer entries out of All-tab searches.
-
-After a client launch with Mixin export enabled, run
-`python versions/26.3/tests/check_config_mixins.py` with Java 25 on PATH or
-JAVA_HOME. This checks the actual transformed GUI bytecode for both redirects
-in both methods, exactly once each. This regression check and the 14-target
-runtime transformation audit passed against the pinned dependencies. Visual
-verification remains blocked here by SDL reporting no available video device.
